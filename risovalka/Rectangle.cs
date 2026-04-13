@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace risovalka
 {
@@ -13,22 +9,36 @@ namespace risovalka
 
         public override void Draw(Graphics canvas)
         {
-            Pen pen = new Pen(fillColour);
-            Brush brush = new SolidBrush(lineColour);
-
             int x = Math.Min(x0, x1);
             int y = Math.Min(y0, y1);
+            int w = Width;
+            int h = Height;
 
-            int width = Math.Abs(x1 - x0);
-            int height = Math.Abs(y1 - y0);
-
-            canvas.FillRectangle(brush, x, y, width, height);
-            canvas.DrawRectangle(pen, x, y, width, height);
+            using (Brush brush = new SolidBrush(fillColour))
+            using (Pen pen = new Pen(lineColour))
+            {
+                canvas.FillRectangle(brush, x, y, w, h);
+                canvas.DrawRectangle(pen, x, y, w, h);
+            }
         }
 
-        public new string Info()
+        public override double Square()
         {
-            return "ima rectangle";
+            return Width * Height;
+        }
+
+        public override bool IsIn(int px, int py)
+        {
+            int xMin = Math.Min(x0, x1);
+            int xMax = Math.Max(x0, x1);
+            int yMin = Math.Min(y0, y1);
+            int yMax = Math.Max(y0, y1);
+            return px >= xMin && px <= xMax && py >= yMin && py <= yMax;
+        }
+
+        public override string Info()
+        {
+            return $"Прямоугольник: ширина={Width}, высота={Height}, площадь={Square():F1}";
         }
     }
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace risovalka
 {
@@ -18,15 +14,16 @@ namespace risovalka
 
         public int Width
         {
-            get { return Width; }
-            set { Width = value; }
+            get { return Math.Abs(x1 - x0); }
         }
 
         public int Height
         {
-            get { return Height; }
-            set { Height = value; }
+            get { return Math.Abs(y1 - y0); }
         }
+
+        public Color FillColour { get => fillColour; set => fillColour = value; }
+        public Color LineColour { get => lineColour; set => lineColour = value; }
 
         public Shape(int x0, int y0, int x1, int y1, Color fillColour, Color lineColour)
         {
@@ -40,11 +37,15 @@ namespace risovalka
 
         public abstract void Draw(Graphics canvas);
         public abstract double Square();
-        public abstract bool IsIn();
 
-        public string Info()
+        /// <summary>
+        /// Проверяет, находится ли точка внутри фигуры
+        /// </summary>
+        public abstract bool IsIn(int px, int py);
+
+        public virtual string Info()
         {
-            return "ima figure";
+            return $"Фигура: ширина={Width}, высота={Height}, площадь={Square():F1}";
         }
     }
 }
