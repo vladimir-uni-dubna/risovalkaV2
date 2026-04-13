@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace risovalka
 {
@@ -13,22 +9,37 @@ namespace risovalka
 
         public override void Draw(Graphics canvas)
         {
-            Pen pen = new Pen(fillColour);
-            Brush brush = new SolidBrush(lineColour);
-
             int x = Math.Min(x0, x1);
             int y = Math.Min(y0, y1);
+            int w = Width;
+            int h = Height;
 
-            int width = Math.Abs(x1 - x0);
-            int height = Math.Abs(y1 - y0);
-
-            canvas.FillEllipse(brush, x, y, width, height);
-            canvas.DrawEllipse(pen, x, y, width, height);
+            using (Brush brush = new SolidBrush(fillColour))
+            using (Pen pen = new Pen(lineColour))
+            {
+                canvas.FillEllipse(brush, x, y, w, h);
+                canvas.DrawEllipse(pen, x, y, w, h);
+            }
         }
 
-        public new string Info()
+        public override double Square()
         {
-            return "ima ellipse";
+            return Math.PI * Width * Height / 4.0;
+        }
+
+        public override bool IsIn(int px, int py)
+        {
+            int cx = (x0 + x1) / 2;
+            int cy = (y0 + y1) / 2;
+            double a = Width / 2.0;
+            double b = Height / 2.0;
+            if (a == 0 || b == 0) return false;
+            return ((px - cx) * (px - cx)) / (a * a) + ((py - cy) * (py - cy)) / (b * b) <= 1;
+        }
+
+        public override string Info()
+        {
+            return $"Эллипс: ширина={Width}, высота={Height}, площадь={Square():F1}";
         }
     }
 }

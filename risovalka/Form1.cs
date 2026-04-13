@@ -1,192 +1,164 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace risovalka
 {
     public partial class Form1 : Form
     {
-        Graphics canvas;
-        public int x0, y0, x1, y1;
-
-        ShapeType currentFigure;
-        Shape currentShape;
+        ShapeType currentFigure = ShapeType.Rectangle;
         List<Shape> shapes = new List<Shape>();
+        Shape previewShape = null;
 
-        bool isResizing = false;
+        bool isDrawing = false;
+        int startX, startY;
 
-        bool isMouseDown = false;
+        Color fillColor = Color.LightBlue;
+        Color lineColor = Color.Black;
 
         public Form1()
         {
             InitializeComponent();
-            canvas = panel1.CreateGraphics();
+            panel1.BackColor = Color.White;
+            this.DoubleBuffered = true;
+            this.Text = "Рисовалка v2";
+        }
+
+        // =================== КНОПКИ ФИГУР ===================
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            currentFigure = ShapeType.Rectangle;
+            HighlightButton(button4);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            try
-            {
-                currentFigure = ShapeType.Ellipse;
-            }
-            catch (Exception ex)
-            {
-                label1.Text = ex.Message;
-            }
+            currentFigure = ShapeType.Ellipse;
+            HighlightButton(button2);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            try
-            {
-                currentFigure = ShapeType.Triangle;
-            }
-            catch (Exception ex)
-            {
-                label1.Text = ex.Message;
-            }
+            currentFigure = ShapeType.Triangle;
+            HighlightButton(button3);
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void HighlightButton(Button active)
         {
-            try
-            {
-                currentFigure = ShapeType.Rectangle;
-            }
-            catch (Exception ex)
-            {
-                label1.Text = ex.Message;
-            }
+            button4.BackColor = SystemColors.Control;
+            button2.BackColor = SystemColors.Control;
+            button3.BackColor = SystemColors.Control;
+            active.BackColor = Color.LightGreen;
         }
+
+        // =================== ЦВЕТА ===================
 
         private void button1_Click(object sender, EventArgs e)
         {
+            colorDialog1.Color = fillColor;
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                button1.BackColor = colorDialog1.Color;
+                fillColor = colorDialog1.Color;
+                button1.BackColor = fillColor;
             }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
+            colorDialog2.Color = lineColor;
             if (colorDialog2.ShowDialog() == DialogResult.OK)
             {
-                button5.BackColor = colorDialog2.Color;
+                lineColor = colorDialog2.Color;
+                button5.BackColor = lineColor;
             }
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        // =================== РИСОВАНИЕ МЫШЬЮ ===================
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
         {
-            x0 = e.X;
-            y0 = e.Y;
+            if (e.Button != MouseButtons.Left) return;
 
-            isResizing = true;
+            isDrawing = true;
+            startX = e.X;
+            startY = e.Y;
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
-            try
-            {
-                if (isResizing == true)
-                {
-                    x1 = e.X;
-                    y1 = e.Y;
+            if (!isDrawing) return;
 
-                    canvas = panel1.CreateGraphics();
-
-                    if (currentFigure == ShapeType.Rectangle)
-                    {
-                        currentShape = new Rectangle(x0, y0, x1, y1, colorDialog1.Color, colorDialog2.Color);
-                        Rectangle rec = (Rectangle)currentShape;
-                    }
-                    else if (currentFigure == ShapeType.Ellipse)
-                    {
-                        currentShape = new Ellipse(x0, y0, x1, y1, colorDialog1.Color, colorDialog2.Color);
-                        Ellipse eli = (Ellipse)currentShape;
-                    }
-                    else if (currentFigure == ShapeType.Triangle)
-                    {
-                        currentShape = new Triangle(x0, y0, x1, y1, colorDialog1.Color, colorDialog2.Color);
-                        Triangle tri = (Triangle)currentShape;
-                    }
-
-                    currentShape.Draw(canvas);
-                    panel1.Refresh();
-                }
-            }
-            catch (Exception ex)
-            {
-                label1.Text = ex.Message;
-            }
+            previewShape = CreateShape(startX, startY, e.X, e.Y);
+            panel1.Invalidate();
         }
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
+            if (!isDrawing) return;
 
-            if (!isMouseDown) { return; }
-            isResizing = false;
+            isDrawing = false;
 
-            x1 = e.X;
-            y1 = e.Y;
-
-            int width = e.X - x1;
-            int height = e.Y - y1;
-
-            currentFigure.Width = width;
-            currentFigure.Height = height;
-
-            try
+            Shape shape = CreateShape(startX, startY, e.X, e.Y);
+            if (shape.Width > 1 && shape.Height > 1)
             {
-                x1 = e.X;
-                y1 = e.Y;
-
-                canvas = panel1.CreateGraphics();
-
-                if (currentFigure == ShapeType.Rectangle)
-                {
-                    currentShape = new Rectangle(x0, y0, x1, y1, colorDialog1.Color, colorDialog2.Color);
-                    Rectangle rec = (Rectangle)currentShape;
-                    //MessageBox.Show(rec.Info());
-                }
-                else if (currentFigure == ShapeType.Ellipse)
-                {
-                    currentShape = new Ellipse(x0, y0, x1, y1, colorDialog1.Color, colorDialog2.Color);
-                    Ellipse eli = (Ellipse)currentShape;
-                    //MessageBox.Show(eli.Info());
-                }
-                else if (currentFigure == ShapeType.Triangle)
-                {
-                    currentShape = new Triangle(x0, y0, x1, y1, colorDialog1.Color, colorDialog2.Color);
-                    Triangle tri = (Triangle)currentShape;
-                    //MessageBox.Show(tri.Info());
-                }
-
-                currentShape.Draw(canvas);
-                shapes.Add(currentShape);
+                shapes.Add(shape);
             }
-            catch (Exception ex)
+            previewShape = null;
+            panel1.Invalidate();
+        }
+
+        private Shape CreateShape(int x0, int y0, int x1, int y1)
+        {
+            switch (currentFigure)
             {
-                label1.Text = ex.Message;
+                case ShapeType.Rectangle:
+                    return new Rectangle(x0, y0, x1, y1, fillColor, lineColor);
+                case ShapeType.Ellipse:
+                    return new Ellipse(x0, y0, x1, y1, fillColor, lineColor);
+                case ShapeType.Triangle:
+                    return new Triangle(x0, y0, x1, y1, fillColor, lineColor);
+                default:
+                    return new Rectangle(x0, y0, x1, y1, fillColor, lineColor);
             }
         }
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
+        // =================== ДОПОЛНИТЕЛЬНЫЕ КНОПКИ ===================
+
+        private void btnClear_Click(object sender, EventArgs e)
         {
+            shapes.Clear();
+            previewShape = null;
+            panel1.Invalidate();
+        }
+
+        private void btnInfo_Click(object sender, EventArgs e)
+        {
+            if (shapes.Count == 0)
+            {
+                MessageBox.Show("Нет фигур. Нарисуйте что-нибудь!", "Инфо", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            Shape last = shapes[shapes.Count - 1];
+            MessageBox.Show(last.Info(), "Информация о фигуре", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // =================== ОТРИСОВКА ===================
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            // Рисуем все сохранённые фигуры
             foreach (Shape s in shapes)
             {
-                s.Draw(canvas);
+                s.Draw(e.Graphics);
+            }
+
+            // Рисуем превью (текущая фигура под мышью)
+            if (previewShape != null)
+            {
+                previewShape.Draw(e.Graphics);
             }
         }
     }

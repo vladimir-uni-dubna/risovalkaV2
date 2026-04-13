@@ -2,15 +2,8 @@
 {
     partial class Form1
     {
-        /// <summary>
-        /// Обязательная переменная конструктора.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Освободить все используемые ресурсы.
-        /// </summary>
-        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@
 
         #region Код, автоматически созданный конструктором форм Windows
 
-        /// <summary>
-        /// Требуемый метод для поддержки конструктора — не изменяйте 
-        /// содержимое этого метода с помощью редактора кода.
-        /// </summary>
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
@@ -37,84 +26,112 @@
             this.button5 = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
+            this.btnClear = new System.Windows.Forms.Button();
+            this.btnInfo = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // panel1
-            // 
+            //
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(145, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(643, 426);
             this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 409);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 7;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(12, 59);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(127, 41);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "элепс";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(12, 106);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(127, 41);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "трiкутнiк";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button4
-            // 
+            //
+            // button4 — Прямоугольник
+            //
             this.button4.Location = new System.Drawing.Point(12, 14);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(127, 39);
             this.button4.TabIndex = 7;
-            this.button4.Text = "ректангль";
-            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Text = "Прямоугольник";
+            this.button4.BackColor = System.Drawing.Color.LightGreen;
+            this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 380);
+            //
+            // button2 — Эллипс
+            //
+            this.button2.Location = new System.Drawing.Point(12, 59);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(127, 41);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Эллипс";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            //
+            // button3 — Треугольник
+            //
+            this.button3.Location = new System.Drawing.Point(12, 106);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(127, 41);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "Треугольник";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            //
+            // button1 — Цвет заливки
+            //
+            this.button1.Location = new System.Drawing.Point(12, 340);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(127, 24);
+            this.button1.Size = new System.Drawing.Size(127, 28);
             this.button1.TabIndex = 8;
-            this.button1.Text = "цвет заливки";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Text = "Цвет заливки";
+            this.button1.BackColor = System.Drawing.Color.LightBlue;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(12, 410);
+            //
+            // button5 — Цвет обводки
+            //
+            this.button5.Location = new System.Drawing.Point(12, 374);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(127, 24);
+            this.button5.Size = new System.Drawing.Size(127, 28);
             this.button5.TabIndex = 9;
-            this.button5.Text = "цвет обводки";
-            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Text = "Цвет обводки";
+            this.button5.BackColor = System.Drawing.Color.Black;
+            this.button5.ForeColor = System.Drawing.Color.White;
+            this.button5.UseVisualStyleBackColor = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
+            //
+            // btnClear — Очистить
+            //
+            this.btnClear.Location = new System.Drawing.Point(12, 163);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(127, 35);
+            this.btnClear.TabIndex = 10;
+            this.btnClear.Text = "Очистить";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            //
+            // btnInfo — Информация
+            //
+            this.btnInfo.Location = new System.Drawing.Point(12, 204);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(127, 35);
+            this.btnInfo.TabIndex = 11;
+            this.btnInfo.Text = "Инфо о фигуре";
+            this.btnInfo.UseVisualStyleBackColor = true;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
+            //
             // Form1
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnInfo);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button4);
@@ -122,7 +139,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Рисовалка v2";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -140,6 +157,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.ColorDialog colorDialog2;
+        private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.Button btnInfo;
     }
 }
-
