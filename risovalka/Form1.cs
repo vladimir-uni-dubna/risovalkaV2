@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
-using System.Text.Json;
+using System.Web.Script.Serialization;
 
 namespace risovalka
 {
@@ -199,7 +199,8 @@ namespace risovalka
                         data.Shapes.Add(new ShapeData(shape));
                     }
 
-                    string json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    string json = serializer.Serialize(data);
                     File.WriteAllText(saveDialog.FileName, json);
                     MessageBox.Show("Рисунок сохранён!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -223,7 +224,8 @@ namespace risovalka
                 try
                 {
                     string json = File.ReadAllText(openDialog.FileName);
-                    DrawingData data = JsonSerializer.Deserialize<DrawingData>(json);
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    DrawingData data = serializer.Deserialize<DrawingData>(json);
 
                     shapes.Clear();
                     foreach (ShapeData shapeData in data.Shapes)
