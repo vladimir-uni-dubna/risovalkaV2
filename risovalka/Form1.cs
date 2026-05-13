@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
+using System.Text.Json;
 
 namespace risovalka
 {
@@ -12,7 +14,9 @@ namespace risovalka
         Shape previewShape = null;
 
         bool isDrawing = false;
+        bool isResizing = false;
         int startX, startY;
+        Shape selectedShape = null;
 
         Color fillColor = Color.LightBlue;
         Color lineColor = Color.Black;
@@ -81,6 +85,18 @@ namespace risovalka
         {
             if (e.Button != MouseButtons.Left) return;
 
+            // Проверяем, попали ли в угол существующей фигуры для изменения размера
+            for (int i = shapes.Count - 1; i >= 0; i--)
+            {
+                if (shapes[i].IsInResizeHandle(e.X, e.Y))
+                {
+                    isResizing = true;
+                    selectedShape = shapes[i];
+                    return;
+                }
+            }
+
+            // Иначе начинаем рисовать новую фигуру
             isDrawing = true;
             startX = e.X;
             startY = e.Y;
@@ -88,6 +104,15 @@ namespace risovalka
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
+            // Изменение размера существующей фигуры
+            if (isResizing && selectedShape != null)
+            {
+                selectedShape.Resize(e.X, e.Y);
+                panel1.Invalidate();
+                return;
+            }
+
+            // Рисование новой фигуры
             if (!isDrawing) return;
 
             previewShape = CreateShape(startX, startY, e.X, e.Y);
@@ -96,6 +121,14 @@ namespace risovalka
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
         {
+            if (isResizing)
+            {
+                isResizing = false;
+                selectedShape = null;
+                panel1.Invalidate();
+                return;
+            }
+
             if (!isDrawing) return;
 
             isDrawing = false;
@@ -143,6 +176,69 @@ namespace risovalka
 
             Shape last = shapes[shapes.Count - 1];
             MessageBox.Show(last.Info(), "Информация о фигуре", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // =================== СОХРАНЕНИЕ И ЗАГРУЗКА ===================
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog
+            {
+                Filter = "JSON файлы (*.json)|*.json",
+                DefaultExt = "json",
+                Title = "Сохранить рисунок"
+            };
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    DrawingData data = new DrawingData();
+                    foreach (Shape shape in shapes)
+                    {
+                        data.Shapes.Add(new ShapeData(shape));
+                    }
+
+                    string json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
+                    File.WriteAllText(saveDialog.FileName, json);
+                    MessageBox.Show("Рисунок сохранён!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openDialog = new OpenFileDialog
+            {
+                Filter = "JSON файлы (*.json)|*.json",
+                Title = "Загрузить рисунок"
+            };
+
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string json = File.ReadAllText(openDialog.FileName);
+                    DrawingData data = JsonSerializer.Deserialize<DrawingData>(json);
+
+                    shapes.Clear();
+                    foreach (ShapeData shapeData in data.Shapes)
+                    {
+                        shapes.Add(shapeData.ToShape());
+                    }
+
+                    panel1.Invalidate();
+                    MessageBox.Show("Рисунок загружен!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         // =================== ОТРИСОВКА ===================

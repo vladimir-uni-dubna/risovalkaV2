@@ -28,6 +28,8 @@
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnInfo = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnLoad = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             //
@@ -125,11 +127,33 @@
             this.btnInfo.UseVisualStyleBackColor = true;
             this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
             //
+            // btnSave — Сохранить
+            //
+            this.btnSave.Location = new System.Drawing.Point(12, 245);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(127, 35);
+            this.btnSave.TabIndex = 12;
+            this.btnSave.Text = "Сохранить";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            //
+            // btnLoad — Загрузить
+            //
+            this.btnLoad.Location = new System.Drawing.Point(12, 286);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(127, 35);
+            this.btnLoad.TabIndex = 13;
+            this.btnLoad.Text = "Загрузить";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            //
             // Form1
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnLoad);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnInfo);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.button5);
@@ -159,5 +183,7 @@
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnInfo;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnLoad;
     }
 }
