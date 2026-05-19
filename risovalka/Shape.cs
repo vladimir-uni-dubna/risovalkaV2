@@ -38,6 +38,15 @@ namespace risovalka
             y1 = newY1;
         }
 
+        // Метод для перемещения фигуры
+        public void Move(int deltaX, int deltaY)
+        {
+            x0 += deltaX;
+            y0 += deltaY;
+            x1 += deltaX;
+            y1 += deltaY;
+        }
+
         // Получить границы фигуры для проверки попадания в угол
         public System.Drawing.Rectangle GetBounds()
         {

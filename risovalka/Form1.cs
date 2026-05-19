@@ -15,7 +15,9 @@ namespace risovalka
 
         bool isDrawing = false;
         bool isResizing = false;
+        bool isMoving = false;
         int startX, startY;
+        int moveOffsetX, moveOffsetY;
         Shape selectedShape = null;
 
         Color fillColor = Color.LightBlue;
@@ -96,6 +98,20 @@ namespace risovalka
                 }
             }
 
+            // Проверяем, попали ли внутрь последней фигуры для перемещения
+            if (shapes.Count > 0)
+            {
+                Shape lastShape = shapes[shapes.Count - 1];
+                if (lastShape.IsIn(e.X, e.Y))
+                {
+                    isMoving = true;
+                    selectedShape = lastShape;
+                    startX = e.X;
+                    startY = e.Y;
+                    return;
+                }
+            }
+
             // Иначе начинаем рисовать новую фигуру
             isDrawing = true;
             startX = e.X;
@@ -112,6 +128,18 @@ namespace risovalka
                 return;
             }
 
+            // Перемещение существующей фигуры
+            if (isMoving && selectedShape != null)
+            {
+                int deltaX = e.X - startX;
+                int deltaY = e.Y - startY;
+                selectedShape.Move(deltaX, deltaY);
+                startX = e.X;
+                startY = e.Y;
+                panel1.Invalidate();
+                return;
+            }
+
             // Рисование новой фигуры
             if (!isDrawing) return;
 
@@ -124,6 +152,14 @@ namespace risovalka
             if (isResizing)
             {
                 isResizing = false;
+                selectedShape = null;
+                panel1.Invalidate();
+                return;
+            }
+
+            if (isMoving)
+            {
+                isMoving = false;
                 selectedShape = null;
                 panel1.Invalidate();
                 return;
