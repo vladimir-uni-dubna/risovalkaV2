@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace risovalka
 {
-    abstract class Shape
+    public abstract class Shape
     {
         protected int x0;
         protected int y0;

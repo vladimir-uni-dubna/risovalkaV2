@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace risovalka
 {
-    internal class Triangle : Shape
+    public class Triangle : Shape
     {
         public Triangle(int x0, int y0, int x1, int y1, Color fillColour, Color lineColour) : base(x0, y0, x1, y1, fillColour, lineColour) { }
 

@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace risovalka
 {
-    internal class Ellipse : Shape
+    public class Ellipse : Shape
     {
         public Ellipse(int x0, int y0, int x1, int y1, Color fillColour, Color lineColour) : base(x0, y0, x1, y1, fillColour, lineColour) { }
 
